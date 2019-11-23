@@ -60,7 +60,9 @@ defmodule Chat.Mixfile do
       # documentation
       {:inch_ex, "~> 0.5.6", only: :docs},
       # github.com/dwyl/learn-pre-commit
-      {:pre_commit, "~> 0.2.4", only: :dev}
+      {:pre_commit, "~> 0.2.4", only: :dev},
+      # github.com/bitwalker/libcluster
+      {:libcluster, "~> 3.0"}
     ]
   end
 
