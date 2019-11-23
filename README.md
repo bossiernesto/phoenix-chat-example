@@ -15,37 +15,43 @@ A ***step-by-step tutorial*** for building, testing
 and _deploying_ a Chat app in Phoenix!
 
 ## Content
-- [Why?](#why)
-- [What?](#what) 
-- [Who?](#who) 
-- [How?](#how)
-  - [0. Pre-requisites (Before you Start)](#0-pre-requisites-before-you-start)
-  - [1. Create the App](#1-create-the-app)
-  - [2. Create the (Websocket) "Channel"](#2-create-the-websocket-channel)
+- [Phoenix Chat Example](#phoenix-chat-example)
+  - [Content](#content)
+  - [Why?](#why)
+  - [What?](#what)
+  - [Who?](#who)
+- [_How_?](#how)
+  - [0. Pre-requisites (_Before you Start_)](#0-pre-requisites-before-you-start)
+    - [_Check_ You Have Everything _Before_ Starting](#check-you-have-everything-before-starting)
+  - [1. _Create_ The _App_](#1-create-the-app)
+  - [2. _Create_ the (WebSocket) "_Channel_"](#2-create-the-websocket-%22channel%22)
   - [3. Update the Template File (UI)](#3-update-the-template-file-ui)
-  - [4. Update the "Client" code in App.js](#4-update-the-client-code-in-appjs)
+  - [4. Update the "Client" code in App.js](#4-update-the-%22client%22-code-in-appjs)
   - [5. Install the Node.js Dependencies](#5-install-the-nodejs-dependencies)
+- [Storing Chat Message Data/History](#storing-chat-message-datahistory)
   - [6. Create/Configure Database](#6-createconfigure-database)
   - [7. Generate Database Schema to Store Chat History](#7-generate-database-schema-to-store-chat-history)
-  - [8. Run the Ecto Migration (Create the Database Table)](#8-run-the-ecto-migration-create-the-database-table)
+  - [8. Run the Ecto Migration (_Create The Database Table_)](#8-run-the-ecto-migration-create-the-database-table)
     - [8.1 Review the Messages Table Schema](#81-review-the-messages-table-schema)
   - [9. Insert Messages into Database](#9-insert-messages-into-database)
-  - [10. Load Existing Messages (When Someone Joins the Chat)](#10-load-existing-messages-when-someone-joins-the-chat)
-  - [11. Send Existing Messages to the Client when they join](#11-send-existing-messages-to-the-client-when-they-join)
-  - [12. Checkpoint: Our Chat App Saves Messages!! (Try it!)](#12-checkpoint-our-chat-app-saves-messages-try-it)
+  - [10. Load _Existing_ Messages (_When Someone Joins the Chat_)](#10-load-existing-messages-when-someone-joins-the-chat)
+  - [11. Send Existing Messages to the Client when they Join](#11-send-existing-messages-to-the-client-when-they-join)
+  - [12. _Checkpoint_: Our Chat App Saves Messages!! (_Try it_!)](#12-checkpoint-our-chat-app-saves-messages-try-it)
+- [Testing our App (_Automated Testing_)](#testing-our-app-automated-testing)
   - [13. Run the Default/Generated Tests](#13-run-the-defaultgenerated-tests)
-    - [13.1 Fix the Failing Test](#131-fix-the-failing-test)
-    - [13.2 Re-Run the Test(s)](#132-re-run-the-tests)
-  - [14. Understanding the Channel Tests](#14-understanding-the-channel-tests)
-    - [14.1 Analyse a Test](#141-analyse-a-test)
-  - [15. What is Not Tested?](#15-what-is-not-tested)
+    - [13.1 Fix The Failing Test](#131-fix-the-failing-test)
+    - [13.2 Re-Run The Test(s)](#132-re-run-the-tests)
+  - [14. Understanding The Channel Tests](#14-understanding-the-channel-tests)
+    - [14.1 _Analyse_ a Test](#141-analyse-a-test)
+  - [15. What is _Not_ Tested?](#15-what-is-not-tested)
     - [15.1 Add `excoveralls` as a (Development) Dependency to `mix.exs`](#151-add-excoveralls-as-a-development-dependency-to-mixexs)
-    - [15.2 Create a New File called `coveralls.json`](#152-create-a-new-file-called-coverallsjson)
+    - [15.2 Create a _New File_ Called `coveralls.json`](#152-create-a-new-file-called-coverallsjson)
     - [15.3 Run the Tests with Coverage Checking](#153-run-the-tests-with-coverage-checking)
 - [Continuous Integration](#continuous-integration)
 - [Deployment!](#deployment)
-- [Inspiration](#inspiration)
-- [Recommended Reading/Learning](#recommended-reading--learning)
+  - [Inspiration](#inspiration)
+  - [Recommended Reading / Learning](#recommended-reading--learning)
+  - [Instructions to get from repo](#instructions-to-get-from-repo)
 
 
 ## Why?
@@ -874,3 +880,44 @@ therefore we decided to write a quick version for Phoenix 1.4 :-)
 https://quickleft.com/blog/testing-phoenix-websockets
 + Phoenix WebSockets Under a Microscope:
 https://zorbash.com/post/phoenix-websockets-under-a-microscope
+
+
+## Instructions to get from repo
+
+```
+docker-compose up
+```
+
+then create the ddbb and run the current migrations already defined
+
+```
+mix ecto.create
+mix ecto.migrate
+```
+
+You might need inotify-tools, check on [here](https://github.com/rvoicilas/inotify-tools/wiki)
+
+We need to now have a new instance up called a
+
+```
+PORT=4000 iex --sname a --cookie cookie -S mix phx.server
+```
+
+and another one called b 
+
+```
+PORT=4001 iex --sname b --cookie cookie -S mix phx.server
+```
+
+We should now connect a node with b now
+
+```
+Node.connect(:b@<hostname>)
+```
+
+Now we should see that the nodes are interconnected if we again check the Nodes connected with 
+
+```
+Node.list()
+> [:a@altair]
+```

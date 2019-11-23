@@ -34,3 +34,10 @@ npm-debug.log
 
 # avoid adding data to .git
 production.dump
+
+
+#VS code
+.vscode
+
+package-lock.json
+
